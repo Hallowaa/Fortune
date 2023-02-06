@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div id="main">
+            <div id="random-post-container" class="post-container">
+                <div id="placeholder">
+                    Press 'Random' to see a random post!
+                </div>
+            </div>
+            <div id="buttons">
+                <button id="random" class="btn">
+                    <div class="btn-container">
+                        <img class="btn-img" src="images/dice.png">
+                        <div class="btn-text">Random</div>
+                    </div>
+                </button>
+                <button id="post" class="btn"> 
+                    <div class="btn-container">
+                        <img class="btn-img" src="images/plus.png">
+                        <div class="btn-text">Post</div>
+                    </div>
+                </button>
+            </div>
+            <div id="new-post-container" class="post-container">
+                <div id="new-post-image-container" class="post-image-container">
+                    <label id="file-input-label">
+                        <img src="images/plus.png" id="img-placeholder">
+                        <input id="file-input" name="image" type="file" accept="image/*"/>
+                    </label>
+                    <div id="img-prerequisites">
+                        <p>Max size: 5MiB</p>
+                        <p>Supported: <br> jpg, gif, png </p>
+                        <p>delete by clicking on image after upload</p>
+                        <p class="warning" id="warning-text"></p>
+                    </div>
+                </div>
+                <div id="new-post-text-container" class="post-text-container">
+                    <textarea placeholder="Type whatever you want!" class="input" id="input"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id="max-img-container" style="display: none;">
+            <img id="max-img" class="max-img" >
+        </div>
+        
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>
