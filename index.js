@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -16,6 +17,11 @@ let mime = {
     png: 'image/png',
 };
 
+const corsOptions = {
+    origin: 'https://hallowa.neocities.org',
+    optionsSuccessStatus: 200
+}
+
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, './images');
@@ -30,6 +36,7 @@ const upload = multer({ storage });
 app.use(express.static(path.join(__dirname, 'front')));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors);
 
 app.post('/', upload.single('image'), (req, res) => {
     if (req.file === undefined) save(req.body.message, null);
@@ -37,7 +44,7 @@ app.post('/', upload.single('image'), (req, res) => {
     res.send('Got it');
 })
 
-app.get('/random', async (req, res) => {
+app.get('/random', cors(corsOptions), async (req, res) => {
     const post = await getRandomPost();
 
     if(post == null || post == undefined) {
@@ -47,7 +54,7 @@ app.get('/random', async (req, res) => {
     res.send(post);
 });
 
-app.get('/images/*', (req, res) => {
+app.get('/images/*', corsOptions, (req, res) => {
     const file = path.join(__dirname, req.path)
 
     if(file.indexOf(path.join(__dirname, 'images') + path.sep) !== 0) {
