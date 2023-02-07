@@ -18,7 +18,7 @@ postbutton.addEventListener("click", () => {
     if(fileToSend != null) formData.append('image', fileToSend, fileToSend.name);
     formData.append('message', input.value);
 
-    axios.post(server, formData)
+    axios.post(document.URL, formData)
     .then(response => {
         if(fileToSend != null) deleteImage();
         input.value = '';
