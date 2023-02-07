@@ -11,7 +11,7 @@ const imgPrerequisites = document.getElementById('img-prerequisites')
 let fileToSend = null;
 
 postbutton.addEventListener("click", () => {
-    if(input.value == '') return;
+    if(input.value.trim().length == 0) return;
 
     const formData = new FormData();
 
