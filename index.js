@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'front')));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors( {
-    origin: 'https://hallowa.neocities.org/'
+    origin: '*.neocities.org/'
 }));
 
 app.post('/', upload.single('image'), (req, res) => {
