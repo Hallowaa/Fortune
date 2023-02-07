@@ -40,8 +40,6 @@ app.post('/', upload.single('image'), (req, res) => {
 app.get('/random', async (req, res) => {
     const post = await getRandomPost();
 
-    console.log('Sending random post!');
-
     if(post == null || post == undefined) {
         return res.status(404).end('Not found');
     }
