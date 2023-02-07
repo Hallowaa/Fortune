@@ -18,7 +18,7 @@ postbutton.addEventListener("click", () => {
     if(fileToSend != null) formData.append('image', fileToSend, fileToSend.name);
     formData.append('message', input.value);
 
-    axios.post(document.URL, formData)
+    axios.post(server, formData)
     .then(response => {
         if(fileToSend != null) deleteImage();
         input.value = '';
@@ -31,7 +31,7 @@ postbutton.addEventListener("click", () => {
 randombutton.addEventListener("click", () => {
     axios.get(document.URL + 'random')
     .then(response => {
-        if (response.data.image != null) generateRandom(response.data.message, document.URL + 'images/' + response.data.image);
+        if (response.data.image != null) generateRandom(response.data.message, server + 'images/' + response.data.image);
         else generateRandom(response.data.message, null);
     })
     .catch(error => {
