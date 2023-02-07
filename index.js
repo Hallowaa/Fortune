@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -31,9 +30,6 @@ const upload = multer({ storage });
 app.use(express.static(path.join(__dirname, 'front')));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors( {
-    origin: '*.neocities.org/'
-}));
 
 app.post('/', upload.single('image'), (req, res) => {
     if (req.file === undefined) save(req.body.message, null);
