@@ -173,6 +173,7 @@ html {
     padding: 2px;
     word-break: break-word;
     overflow-y: auto;
+    white-space: pre-wrap;
 }
 
 #max-img-container {
