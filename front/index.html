@@ -39,6 +39,7 @@
                         <input id="file-input" name="image" type="file" accept="image/*"/>
                     </label>
                     <div id="img-prerequisites">
+                        <p>Max length: 4000 characters</p>
                         <p>Max size: 5MiB</p>
                         <p>Supported: <br> jpg, gif, png </p>
                         <p>delete by clicking on image after upload</p>
@@ -46,14 +47,15 @@
                     </div>
                 </div>
                 <div id="new-post-text-container" class="post-text-container">
-                    <textarea placeholder="Type whatever you want!" class="input" id="input"></textarea>
+                    <textarea placeholder="Type whatever you want!" class="input" id="input" maxlength="4000"></textarea>
                 </div>
             </div>
         </div>
         <div id="max-img-container" style="display: none;">
             <img id="max-img" class="max-img" >
         </div>
-        
+        <div id="server-response-container">
+        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="main.js"></script>

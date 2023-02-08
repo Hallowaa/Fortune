@@ -188,3 +188,27 @@ html {
     justify-content: center;
     cursor: pointer;
 }
+
+#server-response-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    width: 100%;
+    align-items: center;
+}
+
+.server-response {
+    width: fit-content;
+    color: aliceblue;
+    background-color: rgb(58, 58, 119);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px black;
+}

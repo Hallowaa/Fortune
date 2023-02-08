@@ -7,6 +7,7 @@ const newPostImageContainer = document.getElementById('new-post-image-container'
 const warningText = document.getElementById('warning-text')
 const fileInputLabel = document.getElementById('file-input-label')
 const imgPrerequisites = document.getElementById('img-prerequisites')
+const serverResponseContainer = document.getElementById('server-response-container');
 
 let fileToSend = null;
 
@@ -21,9 +22,11 @@ postbutton.addEventListener("click", () => {
     axios.post(document.URL, formData)
     .then(response => {
         if(fileToSend != null) deleteImage();
-        input.value = '';
+        if(response.data.valid == true) input.value = '';
+        flashServerResponse(response.data.message, 5000);
     })
     .catch(error => {
+        flashServerResponse('Something went wrong...', 5000);
         console.error(error);
     });
 });
@@ -129,4 +132,16 @@ function createRandomBase() {
     });
 
     loadedOnce = true;
+}
+
+function flashServerResponse(message, time) {
+    const serverResponse = document.createElement('div');
+    serverResponse.classList.add('server-response');
+    serverResponse.textContent = message;
+
+    serverResponseContainer.prepend(serverResponse);
+
+    setTimeout( () => {
+        serverResponseContainer.removeChild(serverResponse);
+    }, time);
 }

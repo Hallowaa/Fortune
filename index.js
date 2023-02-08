@@ -32,15 +32,47 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post('/', upload.single('image'), (req, res) => {
-    if (req.file === undefined) save(req.body.message, null);
-    else save(req.body.message, req.file.filename);
-    res.send('Got it');
+    const message = req.body.message;
+    const file = req.file;
+    let response = "";
+    let valid = true;
+
+    if(message == null || message.length == 0) {
+        if (response != "") response += '\n';
+        response += 'There is no message XD';
+        valid = false;
+    }
+
+    if(message != null && message.length > 4000) {
+        if (response != "") response += '\n';
+        response += 'Message is over 4000 characters long';
+        valid = false;
+    }
+
+    if(file != null && file.size > 5242880) {
+        if (response != "") response += '\n';
+        response += 'Image is over 5MiB in size';
+        valid = false;
+    }
+
+    if (valid == true) {
+        save(message, file);
+        res.send({
+            message: 'Uploaded!',
+            valid: true
+        })
+    } else {
+        res.send({ 
+            message: response,
+            valid: false
+        });
+    }
 })
 
 app.get('/random', async (req, res) => {
     const post = await getRandomPost();
 
-    if(post == null || post == undefined) {
+    if(post == null) {
         return res.status(404).end('Not found');
     }
 
