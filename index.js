@@ -56,7 +56,7 @@ app.post('/', upload.single('image'), (req, res) => {
     }
 
     if (valid == true) {
-        save(message, file);
+        save(message, file.filename);
         res.send({
             message: 'Uploaded!',
             valid: true
