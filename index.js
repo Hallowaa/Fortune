@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const { save, getRandomPost } = require('./db');
+const { save, getRandomPosts, getCollectionSize } = require('./db');
 require('dotenv').config();
 
 const app = express();
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'front')));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post('/', upload.single('image'), (req, res) => {
+app.post('/newpost', upload.single('image'), (req, res) => {
     const message = req.body.message;
     const file = req.file;
     let response = "";
@@ -56,7 +56,9 @@ app.post('/', upload.single('image'), (req, res) => {
     }
 
     if (valid == true) {
-        save(message, file.filename);
+        if(file == null) save(message, null);
+        else save(message, file.filename);
+        
         res.send({
             message: 'Uploaded!',
             valid: true
@@ -70,22 +72,33 @@ app.post('/', upload.single('image'), (req, res) => {
 })
 
 app.get('/random', async (req, res) => {
-    const post = await getRandomPost();
+    if(await getCollectionSize() == 0) {
+        return res.send({
+            success: false,
+            message: 'There are no posts!'
+        });
+    }
+
+    const post = await getRandomPosts(1, req.query.id);
 
     if(post == null) {
         return res.status(404).end('Not found');
     }
 
-    res.send(post);
+    res.send({
+        success: true,
+        post: post
+    });
 });
 
 app.get('/images/*', (req, res) => {
     const file = path.join(__dirname, req.path)
 
     if(file.indexOf(path.join(__dirname, 'images') + path.sep) !== 0) {
-        return res.status(403).end('Forbidden')
+        return res.status(403).end('Forbidden');
     }
-    const type = mime[path.extname(file).slice(1)] || 'text/plain'
+
+    const type = mime[path.extname(file).slice(1)] || 'text/plain';
     
     const s = fs.createReadStream(file)
     s.on('open', () => {
@@ -96,7 +109,15 @@ app.get('/images/*', (req, res) => {
         res.set('Content-type', 'text/plain');
         res.status(404).end('Not found');
     })
-})
+});
+
+app.get('/total', async (req, res) => {
+    const total = await getCollectionSize();
+    
+    res.send({
+        total: total
+    });
+});
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

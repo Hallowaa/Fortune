@@ -1,4 +1,6 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
+
 require('dotenv').config();
 const client = new MongoClient(process.env.MONGODBURI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -9,16 +11,30 @@ client.connect(err => {
 const dbo = client.db(process.env.DB);
 const collection = dbo.collection(process.env.COLLECTION);
 
-function save(message, imageName) {
-    const post = { message: message, image: imageName || null};
+async function save(message, imageName) {
+    const postNumber = await getCollectionSize() + 1;
+    const post = { message: message, image: imageName || null, postNumber: postNumber};
     collection.insertOne(post, function(err, res) {
         if (err) throw err;
     });
 }
 
-async function getRandomPost() {
-    const result = await collection.aggregate([{ $sample: { size: 1 } }]).toArray();
+async function getRandomPosts(count, discard) {
+    let result;
+    if(discard != null && await getCollectionSize() > 1) {
+        const excluded = new ObjectId(discard);
+        result = await collection.aggregate([
+            { $match : { _id: { $ne: excluded }} }, 
+            { $sample: { size: count } }]).toArray();
+    } else {
+        result = await collection.aggregate([
+            { $sample: { size: count } }]).toArray();
+    }
     return result[0];
 }
 
-module.exports = { save, getRandomPost }
+async function getCollectionSize() {
+    return await collection.countDocuments();
+}
+
+module.exports = { save, getRandomPosts, getCollectionSize }
