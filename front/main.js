@@ -28,6 +28,7 @@ postbutton.addEventListener("click", () => {
     if(input.value.trim().length == 0) return;
     if(sending == true) {
         flashServerResponse("Uploading, be patient!", 5000);
+        return;
     }
 
     const formData = new FormData();
