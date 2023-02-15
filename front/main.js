@@ -22,13 +22,20 @@ function updateTotalCounter() {
     });
 }
 
+let sending = false;
+
 postbutton.addEventListener("click", () => {
     if(input.value.trim().length == 0) return;
+    if(sending == true) {
+        flashServerResponse("Uploading, be patient!", 5000);
+    }
 
     const formData = new FormData();
 
     if(fileToSend != null) formData.append('image', fileToSend, fileToSend.name);
     formData.append('message', input.value);
+
+    sending = true;
 
     axios.post(document.URL + 'newpost', formData)
     .then(response => {
@@ -38,10 +45,11 @@ postbutton.addEventListener("click", () => {
         setTimeout( () => {
             updateTotalCounter();
         }, 300);
-        
+        sending = false;
     })
     .catch(error => {
         flashServerResponse('Something went wrong...', 5000);
+        sending = false;
         console.error(error);
     });
 });
