@@ -37,4 +37,8 @@ async function getCollectionSize() {
     return await collection.countDocuments();
 }
 
-module.exports = { save, getRandomPosts, getCollectionSize }
+async function getPost(number) {
+    return await collection.findOne({ 'postNumber': number });
+}
+
+module.exports = { save, getRandomPosts, getCollectionSize, getPost }

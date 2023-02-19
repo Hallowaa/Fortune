@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const { save, getRandomPosts, getCollectionSize } = require('./db');
+const { save, getRandomPosts, getCollectionSize, getPost } = require('./db');
 require('dotenv').config();
 
 const app = express();
@@ -91,6 +91,46 @@ app.get('/random', async (req, res) => {
     });
 });
 
+app.get('/post', async(req, res) => {
+    let collectionSize = await getCollectionSize();
+
+    if(collectionSize == 0) {
+        return res.send({
+            success: false,
+            message: 'There are no posts!'
+        });
+    }
+    
+    if (collectionSize < req.query.postNumber) {
+        return res.send({
+            success: false,
+            message: 'Post number is too high'
+        });
+    }
+
+    if (req.query.postNumber <= 0) {
+        return res.send({
+            success: false,
+            message: 'Post number should be over 0'
+        })
+    }
+
+    const post = await getPost(Number.parseInt(req.query.postNumber));
+
+    if(post == null) {
+        return res.send({
+            success: false,
+            message: 'Post not found'
+        });
+    }
+
+    return res.send({
+        success: true,
+        post: post
+    });
+
+});
+
 app.get('/images/*', (req, res) => {
     const file = path.join(__dirname, req.path)
 
@@ -118,6 +158,8 @@ app.get('/total', async (req, res) => {
         total: total
     });
 });
+
+
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

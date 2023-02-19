@@ -34,6 +34,15 @@
                         <div class="btn-text">Post</div>
                     </div>
                 </button>
+                <div id="goto-container" class="btn">
+                    <button id="goto">
+                        <div class="btn-container">
+                            <div class="btn-text">Goto</div>
+                        </div>
+                    </button>
+                    <textarea oninput="validateGoto(this)" id="goto-input"></textarea>
+                </div>
+                
             </div>
             <div id="new-post-container" class="post-container">
                 <div id="new-post-image-container" class="post-image-container">
@@ -45,7 +54,7 @@
                         <p>Max length: 4000 characters</p>
                         <p>Max size: 5MiB</p>
                         <p>Supported: <br> jpg, gif, png </p>
-                        <p>delete by clicking on image after upload</p>
+                        <p>Delete by clicking on image after upload</p>
                         <p class="warning" id="warning-text"></p>
                     </div>
                 </div>

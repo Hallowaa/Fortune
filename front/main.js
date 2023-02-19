@@ -9,7 +9,8 @@ const fileInputLabel = document.getElementById('file-input-label');
 const imgPrerequisites = document.getElementById('img-prerequisites');
 const serverResponseContainer = document.getElementById('server-response-container');
 const totalPosts = document.getElementById('total');
-
+const gotobutton = document.getElementById('goto');
+const gotoinput = document.getElementById('goto-input');
 let fileToSend = null;
 
 function updateTotalCounter() {
@@ -21,6 +22,27 @@ function updateTotalCounter() {
         console.error(error);
     });
 }
+
+gotobutton.addEventListener("click", () => {
+    if(gotoinput.value.trim().length == 0) return;
+
+    axios.get(document.URL + 'post', {
+        params: {
+            postNumber: Number.parseInt(gotoinput.value)
+        }
+    }).then(response => {
+        if(response.data.success == false) {
+            flashServerResponse(response.data.message, 5000);
+            return;
+        }
+
+        generateRandom(response.data.post);
+        lastSeenId = response.data.post._id.toString();
+    }).catch(error => {
+        flashServerResponse('Something went wrong...', 5000);
+        console.error(error);
+    });
+});
 
 let sending = false;
 
@@ -208,6 +230,12 @@ function newE(type, id, ...classes) {
     });
 
     return element;
+}
+
+function validateGoto(elem) {
+    const value = elem.value;
+    const numVal = value.replace(/\D+/g, "");
+    elem.value = numVal;
 }
 
 
