@@ -57,8 +57,8 @@ app.get('/total', async (req, res) => {
     handleGetTotal(req, res);
 });
 
-app.listen(port, hostname, () => {
+/*app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
-});
+});*/
 
 const httpsServer = https.createServer({key, cert}, app).listen(process.env.PORT);
