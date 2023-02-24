@@ -7,6 +7,7 @@ const multer = require('multer');
 const { handleNewpost, handleGetRandom, handleGetPost, handleGetImage, handleGetTotal } = require('./request-handle');
 require('dotenv').config();
 
+/*
 async function getCerts() {
     const certdir = (await fs.readdir("/etc/letsencrypt/live"))[0];
 
@@ -17,6 +18,8 @@ async function getCerts() {
 }
 
 const {key, cert} = getCerts();
+
+*/
 
 const app = express();
 const port = process.env.PORT;
@@ -57,8 +60,8 @@ app.get('/total', async (req, res) => {
     handleGetTotal(req, res);
 });
 
-/*app.listen(port, hostname, () => {
+app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
-});*/
+});
 
-const httpsServer = https.createServer({key, cert}, app).listen(process.env.PORT);
+//const httpsServer = https.createServer({key, cert}, app).listen(process.env.PORT);
