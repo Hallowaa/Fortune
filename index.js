@@ -11,8 +11,8 @@ async function getCerts() {
     const certdir = (await fs.readdir("/etc/letsencrypt/live"))[0];
 
     return {
-        key: await fs.readFile(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
-        cert: await fs.readFile(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
+        key: await fs.readFile(`/etc/letsencrypt/live/fortune.cyuucat.moe/privkey.pem`),
+        cert: await fs.readFile(`/etc/letsencrypt/live/fortune.cyuucat.moe/fullchain.pem`)
     }
 }
 
