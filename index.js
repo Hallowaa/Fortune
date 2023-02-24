@@ -1,10 +1,22 @@
+const https = require('https');
 const express = require('express');
-const fs = require('fs');
+const fs = require('mz/fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const { handleNewpost, handleGetRandom, handleGetPost, handleGetImage, handleGetTotal } = require('./request-handle');
 require('dotenv').config();
+
+async function getCerts() {
+    const certdir = (await fs.readdir("/etc/letsencrypt/live"))[0];
+
+    return {
+        key: await fs.readFile(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
+        cert: await fs.readFile(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
+    }
+}
+
+const {key, cert} = getCerts();
 
 const app = express();
 const port = process.env.PORT;
@@ -48,3 +60,5 @@ app.get('/total', async (req, res) => {
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+const httpsServer = https.createServer({key, cert}, app).listen(process.env.PORT);
