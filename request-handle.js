@@ -71,20 +71,6 @@ async function handleGetPost(req, res) {
             message: 'There are no posts!'
         });
     }
-    
-    if (collectionSize < req.query.postNumber) {
-        return res.send({
-            success: false,
-            message: 'Post number is too high'
-        });
-    }
-
-    if (req.query.postNumber <= 0) {
-        return res.send({
-            success: false,
-            message: 'Post number should be over 0'
-        })
-    }
 
     const post = await getPost(Number.parseInt(req.query.postNumber));
 
